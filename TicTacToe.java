@@ -2,7 +2,7 @@ import java.util.Scanner;
 public class TicTacToe {
     Scanner scanner = new Scanner(System.in);
 
-    final int dimension = 2;
+    final int dimension = 3;
     String board[][] = new String[dimension][dimension];
 
     Player player1;
@@ -12,13 +12,13 @@ public class TicTacToe {
     public static void main(String[] args) {
         TicTacToe Game = new TicTacToe();
         Game.StartGame();
-        // checks win
         Boolean done = false;
         while (!done){
             Game.Turn();
             Game.PrintBoard();
-            done = Game.GameOver();
+            done = Game.gameOver();
         }
+        
     }
     public void StartGame(){
         System.out.println("Enter Player 1 name: ");
@@ -63,7 +63,35 @@ public class TicTacToe {
             }
         }
     }
-    public Boolean GameOver(){
+    public boolean gameOver() {
+        for (int i = 0; i < dimension; i++) {
+            if (checkLine(board[i][0], board[i][1], board[i][2]) || 
+                checkLine(board[0][i], board[1][i], board[2][i])) {
+                return true;
+            }
+        }
+        if (checkLine(board[0][0], board[1][1], board[2][2]) || 
+            checkLine(board[0][2], board[1][1], board[2][0])) {
+            return true;
+        }
+        boolean draw = true;
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
+                if (board[i][j].equals("-")) {
+                    draw = false;
+                    break;
+                }
+            }
+        }
+        if (draw) {
+            System.out.println("It's a draw!");
+            System.exit(0);
+        }
+
         return false;
+    }
+
+    private boolean checkLine(String a, String b, String c) {
+        return !a.equals("-") && a.equals(b) && b.equals(c);
     }
 }
